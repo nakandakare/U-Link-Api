@@ -1,13 +1,11 @@
 package com.bolsadeideas.springboot.app.controller;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +28,10 @@ public class UsuarioRestController {
 	@Autowired
 	private IUsuarioService usuarioService;
 	
+	//Utilizo Bcrypt para codificar la contraseña
+	@Autowired
+	private BCryptPasswordEncoder bc;
+
 	@GetMapping("/usuarios")
 	public List<Usuario> index() {
 		return usuarioService.findAll();
@@ -40,13 +42,24 @@ public class UsuarioRestController {
 		return usuarioService.findById(id);
 	}
 	
-	@PostMapping("/usuarios")
+	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Usuario create(@RequestBody Usuario usuario) {
+		String plainPassword = usuario.getPassword();
+		String hashedPassword = bc.encode(plainPassword); //Implemento Bcrypt.
+		usuario.setPassword(hashedPassword); //Seteo la contraseña con Bcrypt.
 		return usuarioService.save(usuario);
 	}
 	
-	@PostMapping("/login")
+	@PostMapping("/usuarioPorEmail")
+	public Usuario usuarioPorEmail(String email) {
+		Usuario usuario = usuarioService.findWithEmail(email);
+		return usuario;
+	}
+	
+	/*Utilizo autentication api con Token en vez de esta api.
+	 * 
+	 * @PostMapping("/login")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public Usuario login(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String email = request.getParameter("email");
@@ -60,7 +73,7 @@ public class UsuarioRestController {
 			return null;
 		} 
 		
-	}
+	}*/
 	
 	@PutMapping("/usuarios/{id}")
 	@ResponseStatus(HttpStatus.CREATED)

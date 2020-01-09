@@ -37,7 +37,6 @@ public class UsuarioServiceImpl implements IUsuarioService{
 
 	@Transactional(readOnly = true)
 	public Usuario findWithEmail(String email) {
-		
 		return usuarioDao.findByEmail(email);
 	}
 }

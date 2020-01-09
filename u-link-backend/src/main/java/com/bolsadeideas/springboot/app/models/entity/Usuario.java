@@ -30,19 +30,22 @@ public class Usuario {
 	private String apellido;
 	
 	@Column(nullable = false, unique=true)
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String email;
 	
 	@Column(nullable = false)
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
-	private String role;
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private String role = "USER";
 	
 	@Column(name="img")
 	private String img = "https://i.postimg.cc/2ygF6qVQ/user-default.jpg";
 	
 	@Column(name="create_at")
 	@Temporal(TemporalType.DATE)
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private Date createAt;
 		
 	@PrePersist //se va a llamar este metodo justo antes de invocar el metodo persist

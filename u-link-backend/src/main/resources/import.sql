@@ -1,1 +1,1 @@
-insert into usuarios (nombre,apellido,email,password, role, img) values('Kevin','Nakandakare','kevingnak123@gmail.com','fuuta135','null','https://i.postimg.cc/2ygF6qVQ/user-default.jpg');
+insert into usuarios (nombre,apellido,email,password, role, img) values('Kevin','Nakandakare','kevin@gmail.com','$2y$12$irL5z.pynjmhcOhk1T0cUur9.Fpw.wCK7um.ubLeu0R/QV3inDoVm','USER','https://i.postimg.cc/2ygF6qVQ/user-default.jpg');
