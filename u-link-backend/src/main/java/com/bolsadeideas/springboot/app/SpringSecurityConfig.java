@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.bolsadeideas.springboot.app.auth.filter.JWTAuthenticationFilter;
+import com.bolsadeideas.springboot.app.auth.filter.JWTAuthorizationFilter;
 import com.bolsadeideas.springboot.app.models.services.JpaUserDetailService;
 
 @Configuration
@@ -44,6 +45,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 		.logout().permitAll()*/
 		.and()
 		.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+		.addFilter(new JWTAuthorizationFilter(authenticationManager()))
 		.csrf().disable()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //Desabilito el manejo de sesion para que sea STATELESS AUTHENTICAITON.
 	}
