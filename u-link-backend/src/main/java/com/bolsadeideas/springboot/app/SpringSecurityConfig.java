@@ -24,7 +24,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 		return new BCryptPasswordEncoder();
 	}
 	
-				//Configuracion Global
+				//Para utilizar esta autenticacion (que para mi es Magia) como API y con JWT también hay que hacer clases Filters donde le envias usernames password con post y luego utiliza este metodo.  
 	@Autowired //aca se define como se autentica el usuario (En este caso se utiliza autenticacion con JPA).
 	public void configurerGlobal(AuthenticationManagerBuilder build) throws Exception	{
 		build.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
@@ -37,8 +37,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/**").permitAll()
-		.anyRequest().authenticated()
+		http.authorizeRequests().antMatchers("/api/login","/api/register").permitAll()
+		//	.anyRequest().authenticated()
 		/*.and()
 		.formLogin().permitAll()
 		.and()

@@ -40,8 +40,11 @@ public class Usuario {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String role = "USER";
 	
-	@Column(name="img")
+	@Column(name="img") //default img
 	private String img = "https://i.postimg.cc/2ygF6qVQ/user-default.jpg";
+	
+	@Column(length=100000) //para evitar el error "data to long"
+	private byte[] data;
 	
 	@Column(name="create_at")
 	@Temporal(TemporalType.DATE)
@@ -104,6 +107,15 @@ public class Usuario {
 	public void setImg(String img) {
 		this.img = img;
 	}
+
+	public byte[] getData() {
+		return data;
+	}
+
+	public void setData(byte[] data) {
+		this.data = data;
+	}
+	
 	
 	
 }

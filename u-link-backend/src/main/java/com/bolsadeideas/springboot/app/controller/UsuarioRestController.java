@@ -1,5 +1,9 @@
 package com.bolsadeideas.springboot.app.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 
@@ -14,8 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bolsadeideas.springboot.app.models.entity.Usuario;
 import com.bolsadeideas.springboot.app.models.services.IUsuarioService;
@@ -55,6 +61,21 @@ public class UsuarioRestController {
 	public Usuario usuarioPorEmail(String email) {
 		Usuario usuario = usuarioService.findWithEmail(email);
 		return usuario;
+	}
+	
+	@PostMapping("/setImg")
+	public void setImg(@RequestParam("img") MultipartFile img, @RequestParam("id") long id) throws IOException {
+		
+		Path directorioRecursos = Paths.get("src//main//resources//static//upload");
+		String rootPath = directorioRecursos.toFile().getAbsolutePath();
+		byte[] bytes = img.getBytes();
+		Path rutaCompleta = Paths.get(rootPath + "//" + img.getOriginalFilename());
+		Files.write(rutaCompleta, bytes);
+		/*Usuario usuarioActual = usuarioService.findById(id);
+		usuarioActual.setData(img.getBytes());
+		usuarioService.save(usuarioActual);*/
+		
+		
 	}
 	
 	/*Utilizo autentication api con Token en vez de esta api.

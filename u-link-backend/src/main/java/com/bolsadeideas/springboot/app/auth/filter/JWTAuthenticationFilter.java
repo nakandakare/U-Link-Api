@@ -2,7 +2,6 @@ package com.bolsadeideas.springboot.app.auth.filter;
 
 import java.io.IOException;
 import java.security.Key;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,7 +79,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			Authentication authResult) throws IOException, ServletException {
 		/* authResult = authToken autenticado, obtenemos el email */
 		String email = ((User) authResult.getPrincipal()).getUsername();
-		String emailModificado = email.split("@")[0]; //se lo envio como subject através del token.
 		
 		/* Como el Filter no utiliza Spring Context, no puedo usar DI (por ej, Autowired a IUsuarioDao retorna null),
 		por lo tanto utilizo servletContext y de esta manera utilizo usuarioDao. */
@@ -94,13 +92,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         
 		// Aca creamos el Jason web token.
 		String token = Jwts.builder()
-						.setSubject(emailModificado)
-						.signWith(SECRET_KEY) //Key estatico
-						.setExpiration(new Date(System.currentTimeMillis() + 36000))
+						.setSubject(usuario.getEmail())
 						.claim("id", usuario.getId())
 						.claim("nombre", usuario.getNombre())
 						.claim("apellido", usuario.getApellido())
 						.claim("img", usuario.getImg())
+						.signWith(SECRET_KEY) //Key estatico
 						.compact(); //Compactar para crear el token.
 					
 		//Pasamos token por header como respuesta cuando se autentica. Se envia con prefijo "bearer" como estandar.
